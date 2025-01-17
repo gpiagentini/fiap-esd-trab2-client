@@ -1,0 +1,57 @@
+<app-nav-bar></app-nav-bar>
+<div class="container">
+    <mat-card appearance="outlined" class="asset-list-card">
+        <mat-card-header class="asset-list-card-header">
+            <mat-card-title>Sua lista de Ativos</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="mat-card-content" *ngIf="!loading">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8"
+                *ngIf="dataSource && dataSource.data.length > 0; else noData">
+                <!-- Checkout Column -->
+                <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                        </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                            [aria-label]="checkboxLabel(row)">
+                        </mat-checkbox>
+                    </td>
+                </ng-container>
+                <!-- Position Column -->
+                <ng-container matColumnDef="asset">
+                    <th mat-header-cell *matHeaderCellDef> Ativo </th>
+                    <td mat-cell *matCellDef="let element"> {{element.asset}} </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="price">
+                    <th mat-header-cell *matHeaderCellDef> Preço </th>
+                    <td mat-cell *matCellDef="let element"> {{element.price | currency:'USD':'symbol':'1.2-2'}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <!-- Empty state message -->
+            <ng-template #noData>
+                <div class="no-data-message">
+                    <p>No data available</p>
+                </div>
+            </ng-template>
+        </mat-card-content>
+        <mat-card-content class="mat-card-content" *ngIf="loading">
+            <mat-spinner></mat-spinner>
+        </mat-card-content>
+        <mat-card-actions class="asset-list-card-actions">
+            <button mat-raised-button color="primary" (click)="loadAssets()">Recarregar Lista</button>
+            <button mat-raised-button color="primary" (click)="addAsset()">Adicionar Ativo</button>
+            <button mat-raised-button color="primary" (click)="removeAssets()">Remover Selecionados</button>
+        </mat-card-actions>
+    </mat-card>
+
+</div>

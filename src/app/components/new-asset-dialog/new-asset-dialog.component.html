@@ -1,0 +1,13 @@
+<div class="new-asset-dialog-container">
+    <h2>Adicionar Ativo</h2>
+    <form>
+        <mat-form-field class="form-field">
+            <mat-label>Escolha um ativo</mat-label>
+            <input matInput type="text" [(ngModel)]="assetName" name="assetName" />
+        </mat-form-field>
+    </form>
+
+    <div class="new-asset-dialog-actions">
+        <button mat-raised-button color="primary" (click)="addAsset()">Adicionar</button>
+    </div>
+</div>
